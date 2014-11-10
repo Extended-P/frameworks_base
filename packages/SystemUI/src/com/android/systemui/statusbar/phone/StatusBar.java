@@ -5520,6 +5520,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.ACCENT_PICKER),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -5528,17 +5531,28 @@ public class StatusBar extends SystemUI implements DemoMode,
             super.onChange(selfChange, uri);
             update();
             if (uri.equals(Settings.System.getUriFor(
-                        Settings.System.ACCENT_PICKER))) {
+                    Settings.System.ACCENT_PICKER))) {
                     // Unload the accents and update the accent only when the user asks.
                     // Keeps us from overloading the system by performing these tasks every time.
-                    unloadAccents();
-                    updateAccents();
+               unloadAccents();
+               updateAccents();
+
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN))) {
+               setStatusBarWindowViewOptions();
             }
         }
 
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
             updateTheme();
+            setStatusBarWindowViewOptions();
+        }
+    }
+
+    private void setStatusBarWindowViewOptions() {
+        if (mStatusBarWindow != null) {
+            mStatusBarWindow.setStatusBarWindowViewOptions();
         }
     }
 
