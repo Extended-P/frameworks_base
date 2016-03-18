@@ -4199,6 +4199,12 @@ public final class Settings {
         private static final Validator CUSTOM_DEVICE_PROXI_CHECK_ENABLED_VALIDATOR =
                 BOOLEAN_VALIDATOR;
 
+        /** Whether to skip music track with volume rocker 
+        /**
+         * @hide
+         */
+        public static final String VOLUME_BUTTON_MUSIC_CONTROL = "volume_button_music_control";
+
         /**
          * Enable Gesture Haptic feedback
          * KeyHandler
