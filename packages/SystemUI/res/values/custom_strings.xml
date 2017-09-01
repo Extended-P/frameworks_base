@@ -23,5 +23,8 @@
     <string name="accessibility_quick_settings_location_high_accuracy">Location reporting: high accuracy mode.</string>
 
     <string name="lockscreen_tuner_activity">Lockscreen shortcuts</string>
+     
+    <string name="screenshot_abort_title">No screenshot taken</string>
+    <string name="screenshot_abort_text">Operation aborted.</string>
 
 </resources>
