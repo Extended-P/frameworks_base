@@ -5528,6 +5528,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.DOUBLE_TAP_SLEEP_LOCKSCREEN),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -5543,8 +5546,10 @@ public class StatusBar extends SystemUI implements DemoMode,
                updateAccents();
 
             } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN))) {
-               setStatusBarWindowViewOptions();
+                    Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN))
+                    || uri.equals(Settings.System.getUriFor(
+                    Settings.System.DOUBLE_TAP_SLEEP_LOCKSCREEN))) {
+                setStatusBarWindowViewOptions();
             }
         }
 
