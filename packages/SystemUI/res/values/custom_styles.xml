@@ -6,4 +6,9 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
+
+    <style name="TextAppearance.QS.NetworkTraffic">
+        <item name="android:textSize">@dimen/net_traffic_text_size</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
 </resources>
