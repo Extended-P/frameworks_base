@@ -108,4 +108,6 @@
     <!-- Vendor mismatched fingerprint warning -->
     <java-symbol type="string" name="system_error_vendorprint" />
 
+  <java-symbol type="integer" name="config_flashlightProximityTimeout" />
+
 </resources>
