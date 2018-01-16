@@ -190,8 +190,7 @@ public class KeyguardStatusView extends GridLayout implements
         updateOwnerInfo();
         updateLogoutView();
         updateDark();
-
-    }
+   }
 
     /**
      * Moves clock and separator, adjusting margins when slice content changes.
