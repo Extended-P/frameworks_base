@@ -2215,6 +2215,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         updateTheme();
     }
 
+    // Check for the dark system theme
     public boolean isUsingDarkTheme() {
         OverlayInfo themeInfo = null;
         try {
@@ -4141,6 +4142,96 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
+    // Switches theme accent from to another or back to stock
+    public void updateAccents() {
+        int accentSetting = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.ACCENT_PICKER, 0, mCurrentUserId);
+        if (accentSetting == 0) {
+            unloadAccents();
+        } else if (accentSetting == 1) {
+            try {
+                mOverlayManager.setEnabled("com.google.android.theme.bubblegumpink",
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        } else if (accentSetting == 2) {
+            try {
+                mOverlayManager.setEnabled("com.google.android.theme.cyan",
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        } else if (accentSetting == 3) {
+            try {
+                mOverlayManager.setEnabled("com.google.android.theme.flare",
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        } else if (accentSetting == 4) {
+            try {
+                mOverlayManager.setEnabled("com.google.android.theme.purpink",
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        } else if (accentSetting == 5) {
+            try {
+                mOverlayManager.setEnabled("com.google.android.theme.quepal",
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        } else if (accentSetting == 6) {
+            try {
+                mOverlayManager.setEnabled("com.google.android.theme.stock",
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        } else if (accentSetting == 7) {
+            try {
+                mOverlayManager.setEnabled("com.google.android.theme.sunset",
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        } else if (accentSetting == 8) {
+            try {
+                mOverlayManager.setEnabled("com.google.android.theme.veryblue",
+                        true, mCurrentUserId);
+            } catch (RemoteException e) {
+                Log.w(TAG, "Can't change theme", e);
+            }
+        }
+    }
+
+    // Unload all the theme accents
+    public void unloadAccents() {
+        OverlayInfo themeInfo = null;
+        try {
+            mOverlayManager.setEnabled("com.google.android.theme.bubblegumpink",
+                    false /*disable*/, mCurrentUserId);
+            mOverlayManager.setEnabled("com.google.android.theme.cyan",
+                    false /*disable*/, mCurrentUserId);
+            mOverlayManager.setEnabled("com.google.android.theme.flare",
+                    false /*disable*/, mCurrentUserId);
+            mOverlayManager.setEnabled("com.google.android.theme.purpink",
+                    false /*disable*/, mCurrentUserId);
+            mOverlayManager.setEnabled("com.google.android.theme.quepal",
+                    false /*disable*/, mCurrentUserId);
+            mOverlayManager.setEnabled("com.google.android.theme.stock",
+                    false /*disable*/, mCurrentUserId);
+            mOverlayManager.setEnabled("com.google.android.theme.sunset",
+                    false /*disable*/, mCurrentUserId);
+            mOverlayManager.setEnabled("com.google.android.theme.veryblue",
+                    false /*disable*/, mCurrentUserId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void updateDozingState() {
         Trace.traceCounter(Trace.TRACE_TAG_APP, "dozing", mDozing ? 1 : 0);
         Trace.beginSection("StatusBar#updateDozingState");
@@ -5305,12 +5396,23 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SYSTEM_THEME_STYLE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.ACCENT_PICKER),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-
+            super.onChange(selfChange, uri);
+            update();
+            if (uri.equals(Settings.System.getUriFor(
+                        Settings.System.ACCENT_PICKER))) {
+                    // Unload the accents and update the accent only when the user asks.
+                    // Keeps us from overloading the system by performing these tasks every time.
+                    unloadAccents();
+                    updateAccents();
+            }
         }
 
         public void update() {
