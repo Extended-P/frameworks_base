@@ -133,4 +133,6 @@
     -->
     <java-symbol type="integer" name="config_cameraPowerDoubleTapMinTime" />
 
+  <!-- In call notification vibration strength -->
+  <java-symbol type="integer" name="config_in_call_notification_vibration_strength" />
 </resources>
