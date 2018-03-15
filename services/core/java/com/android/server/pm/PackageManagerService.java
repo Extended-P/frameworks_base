@@ -8597,6 +8597,7 @@ public class PackageManagerService extends IPackageManager.Stub
                   mVendorPlatformSignatures) == PackageManager.SIGNATURE_MATCH) {
                 // Overwrite package signature with our platform signature
                 // if the signature is the vendor's platform signature
+                if (mPlatformPackage != null) {
                 pkg.mSigningDetails = new SigningDetails(mPlatformPackage.mSigningDetails.signatures,
                             pkg.mSigningDetails.signatureSchemeVersion,
                             pkg.mSigningDetails.publicKeys,
@@ -8609,6 +8610,8 @@ public class PackageManagerService extends IPackageManager.Stub
 
                 pkg.applicationInfo.seInfo = SELinuxMMAC.getSeInfo(pkg, isPrivileged,
                             targetSandboxVersion, targetSdkVersion);
+
+                }                 
 
                 if (mPlatformPackage != null) {
                     pkg.mSigningDetails = mPlatformPackage.mSigningDetails;
