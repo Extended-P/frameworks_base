@@ -17,10 +17,15 @@
 package com.android.internal.util.du;
 
 import android.Manifest;
+<<<<<<< HEAD
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
+=======
+import android.app.ActivityManager;
+>>>>>>> 54ea6628cf2... Fix screenshot not saved when appending appname with some languages
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
