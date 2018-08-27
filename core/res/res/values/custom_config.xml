@@ -76,4 +76,7 @@
 
     <!-- Component name of the combo network location provider. -->
     <string name="config_comboNetworkLocationProvider" translatable="false">@null</string>
+
+    <!-- Add some extra spacing to all the buttons affected by TextAllCaps --> 
+    <item name="config_buttonTextLetterSpacing" format="float" type="dimen">0</item>
 </resources>
