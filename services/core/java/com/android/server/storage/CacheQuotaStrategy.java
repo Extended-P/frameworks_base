@@ -311,11 +311,11 @@ public class CacheQuotaStrategy implements RemoteCallback.OnResultListener {
             throw new IllegalStateException(e.getMessage());
         } finally {
             if (stream != null) {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    //Ignore exception.
-                }
+            try {
+                stream.close();
+            } catch (IOException e) {
+                // Ignore exception.
+               }
             }
         }
 
