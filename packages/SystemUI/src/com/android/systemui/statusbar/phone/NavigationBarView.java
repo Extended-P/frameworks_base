@@ -65,6 +65,7 @@ import com.android.systemui.OverviewProxyService;
 import com.android.systemui.R;
 import com.android.systemui.RecentsComponent;
 import com.android.systemui.SysUiServiceProvider;
+import com.android.systemui.navigation.Navigator;
 import com.android.systemui.plugins.PluginListener;
 import com.android.systemui.plugins.PluginManager;
 import com.android.systemui.plugins.statusbar.phone.NavGesture;
@@ -89,7 +90,7 @@ import static com.android.systemui.shared.system.NavigationBarCompat.FLAG_SHOW_O
 import static com.android.systemui.shared.system.NavigationBarCompat.HIT_TARGET_OVERVIEW;
 import static com.android.systemui.shared.system.NavigationBarCompat.HIT_TARGET_ROTATION;
 
-public class NavigationBarView extends FrameLayout implements PluginListener<NavGesture> {
+public class NavigationBarView extends FrameLayout implements Navigator {
     final static boolean DEBUG = false;
     final static String TAG = "StatusBar/NavBarView";
 
@@ -161,13 +162,6 @@ public class NavigationBarView extends FrameLayout implements PluginListener<Nav
     private NotificationPanelView mPanelView;
 
     private int mRotateBtnStyle = R.style.RotateButtonCCWStart90;
-
-    private int mBasePaddingBottom;
-    private int mBasePaddingLeft;
-    private int mBasePaddingRight;
-    private int mBasePaddingTop;
-
-    private ViewGroup mNavigationBarContents;
 
     private class NavTransitionListener implements TransitionListener {
         private boolean mBackTransitioning;
@@ -523,10 +517,6 @@ public class NavigationBarView extends FrameLayout implements PluginListener<Nav
         return drawable;
     }
 
-    public KeyButtonDrawable getRecentsDrawable(Context lightContext, Context darkContext) {
-        return getDrawable(lightContext, darkContext, R.drawable.ic_sysbar_recent);
-    }
-
     private void orientBackButton(KeyButtonDrawable drawable) {
         final boolean useAltBack =
             (mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0;
@@ -774,13 +764,20 @@ public class NavigationBarView extends FrameLayout implements PluginListener<Nav
     }
 
     public void updateSlippery() {
-        setSlippery(!isQuickStepSwipeUpEnabled() ||
-                (mPanelView != null && mPanelView.isFullyExpanded()));
+        // temp hax for null mPanelView
+        if (mPanelView == null) {
+            mPanelView = SysUiServiceProvider.getComponent(getContext(), StatusBar.class).getPanel();
+        }
+        final boolean isExpanded = mPanelView != null ? mPanelView.isFullyExpanded() : false;
+        setSlippery(!isQuickStepSwipeUpEnabled() || isExpanded);
     }
 
     private void setSlippery(boolean slippery) {
         boolean changed = false;
         final ViewGroup navbarView = ((ViewGroup) getParent());
+        if (navbarView == null) {
+            return;
+        }
         final WindowManager.LayoutParams lp = (WindowManager.LayoutParams) navbarView
                 .getLayoutParams();
         if (lp == null) {
@@ -907,31 +904,12 @@ public class NavigationBarView extends FrameLayout implements PluginListener<Nav
         return null;
     }
 
-    public void swiftNavigationBarItems(int horizontalShift, int verticalShift) {
-        if (mNavigationBarContents == null) {
-            return;
-        }
-
-        mNavigationBarContents.setPaddingRelative(mBasePaddingLeft + horizontalShift,
-                                              mBasePaddingTop + verticalShift,
-                                              mBasePaddingRight + horizontalShift,
-                                              mBasePaddingBottom - verticalShift);
-        invalidate();
-    }
-
     @Override
     public void onFinishInflate() {
         mNavigationInflaterView = findViewById(R.id.navigation_inflater);
         mNavigationInflaterView.setButtonDispatchers(mButtonDispatchers);
 
         getImeSwitchButton().setOnClickListener(mImeSwitcherClickListener);
-
-        mNavigationBarContents = (ViewGroup) findViewById(R.id.nav_buttons);
-
-        mBasePaddingLeft = mNavigationBarContents.getPaddingStart();
-        mBasePaddingTop = mNavigationBarContents.getPaddingTop();
-        mBasePaddingRight = mNavigationBarContents.getPaddingEnd();
-        mBasePaddingBottom = mNavigationBarContents.getPaddingBottom();
 
         DockedStackExistsListener.register(mDockedListener);
         updateRotatedViews();
@@ -1270,4 +1248,14 @@ public class NavigationBarView extends FrameLayout implements PluginListener<Nav
         mDockedStackExists = exists;
         updateRecentsIcon();
     });
+
+    @Override
+    public View getBaseView() {
+        return this;
+    }
+
+    @Override
+    public void dispose() {
+        removeAllViews();
+    }
 }
