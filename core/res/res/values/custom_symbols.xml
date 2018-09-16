@@ -100,4 +100,8 @@
 
     <!-- Unneccesary gradient declaration | Just for our bars -->
     <java-symbol type="color" name="accent_gradient_end_color" />
+
+    <!-- Smartnav anims -->
+    <java-symbol type="anim" name="inv_app_in" />
+    <java-symbol type="anim" name="inv_app_out" />
 </resources>
