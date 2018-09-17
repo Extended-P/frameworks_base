@@ -226,6 +226,7 @@ import com.android.systemui.statusbar.phone.UnlockMethodCache.OnUnlockMethodChan
 import com.android.systemui.statusbar.policy.BatteryController;
 import com.android.systemui.statusbar.policy.BatteryController.BatteryStateChangeCallback;
 import com.android.systemui.statusbar.policy.BrightnessMirrorController;
+import com.android.systemui.statusbar.policy.BurnInProtectionController;
 import com.android.systemui.statusbar.policy.ConfigurationController;
 import com.android.systemui.statusbar.policy.ConfigurationController.ConfigurationListener;
 import com.android.systemui.statusbar.policy.DarkIconDispatcher;
@@ -374,6 +375,8 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected FingerprintUnlockController mFingerprintUnlockController;
     private LightBarController mLightBarController;
     protected LockscreenWallpaper mLockscreenWallpaper;
+
+    private BurnInProtectionController mBurnInProtectionController;
 
     private int mNaturalBarHeight = -1;
 
@@ -889,6 +892,8 @@ public class StatusBar extends SystemUI implements DemoMode,
                     mStatusBarWindow.setStatusBarView(mStatusBarView);
                     setAreThereNotifications();
                     checkBarModes();
+                    mBurnInProtectionController =
+                        new BurnInProtectionController(mContext, this, mStatusBarView);
                 }).getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.status_bar_container, new CollapsedStatusBarFragment(),
@@ -4654,6 +4659,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             // Keyguard.
             mNotificationPanel.setTouchDisabled(true);
             mStatusBarWindow.cancelCurrentTouch();
+            if (mBurnInProtectionController != null) {
+                mBurnInProtectionController.stopSwiftTimer();
+            }
             if (mLaunchCameraOnFinishedGoingToSleep) {
                 mLaunchCameraOnFinishedGoingToSleep = false;
 
@@ -4680,6 +4688,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             updateVisibleToUser();
             updateIsKeyguard();
             updateScrimController();
+            if (mBurnInProtectionController != null) {
+                mBurnInProtectionController.startSwiftTimer();
+            }
         }
     };
 
