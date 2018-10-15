@@ -59,6 +59,7 @@ public class WifiSignalController extends
         mHasMobileData = hasMobileData;
         Handler handler = new WifiHandler(Looper.getMainLooper());
         mWifiChannel = new AsyncChannel();
+
         if(wifiManager != null){
             Messenger wifiMessenger = wifiManager.getWifiServiceMessenger();
 
