@@ -4276,13 +4276,56 @@ public final class Settings {
         /** @hide */
         private static final Validator AMBIENT_RECOGNITION_NOTIFICATION_VALIDATOR =
                 BOOLEAN_VALIDATOR;
-
         /**
          * Select various accents to go along with system themes
          *
          * @hide
          */
         public static final String ACCENT_PICKER = "accent_picker";
+
+        /**
+         * @hide
+         */
+        public static final String OMNI_NETWORK_TRAFFIC_ENABLE = "network_traffic_enable";
+
+        /** @hide */
+        private static final Validator OMNI_NETWORK_TRAFFIC_ENABLE_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
+         * Network traffic indicator, goes from least to greatest significant bitwise
+         * 0 = Display up-stream traffic if set
+         * 1 = Display down-stream traffic if set
+         * 2 = Show as Byte/s if set
+         * 16-31 = Refresh interval(ms) min: 250 max: 32750 default: 1000
+         * @hide
+         */
+        public static final String OMNI_NETWORK_TRAFFIC_STATE = "network_traffic_state";
+
+        /** @hide */
+        private static final Validator OMNI_NETWORK_TRAFFIC_STATE_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
+
+        /**
+         * Whether or not to hide the network traffic indicator when there is no activity
+         * @hide
+         */
+        public static final String OMNI_NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
+
+        /** @hide */
+        private static final Validator OMNI_NETWORK_TRAFFIC_AUTOHIDE_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
+         * Network traffic inactivity threshold (default is 10 kBs)
+         * @hide
+         */
+        public static final String OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD =
+                "network_traffic_autohide_threshold";
+
+        /** @hide */
+        private static final Validator OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR =
+                ANY_INTEGER_VALIDATOR;
 
         /**
          * IMPORTANT: If you add a new public settings you also have to add it to
@@ -4395,65 +4438,7 @@ public final class Settings {
          * Whether to gently vibrate instead of playing a sound when in-call and a notification is pushed
          * @hide
          */
-<<<<<<< HEAD
         public static final String INCALL_NOTIFICATIONS_VIBRATE = "incall_notifications_vibrate";
-=======
-        public static final String OMNI_LOCKSCREEN_HIDE_MEDIA = "lockscreen_hide_media";
-
-        private static final Validator OMNI_LOCKSCREEN_HIDE_MEDIA_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * @hide
-         */
-        public static final String OMNI_NETWORK_TRAFFIC_ENABLE = "network_traffic_enable";
-
-        /** @hide */
-        private static final Validator OMNI_NETWORK_TRAFFIC_ENABLE_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Network traffic indicator, goes from least to greatest significant bitwise
-         * 0 = Display up-stream traffic if set
-         * 1 = Display down-stream traffic if set
-         * 2 = Show as Byte/s if set
-         * 16-31 = Refresh interval(ms) min: 250 max: 32750 default: 1000
-         * @hide
-         */
-        public static final String OMNI_NETWORK_TRAFFIC_STATE = "network_traffic_state";
-
-        /** @hide */
-        private static final Validator OMNI_NETWORK_TRAFFIC_STATE_VALIDATOR =
-                ANY_INTEGER_VALIDATOR;
-
-        /**
-         * Whether or not to hide the network traffic indicator when there is no activity
-         * @hide
-         */
-        public static final String OMNI_NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
-
-        /** @hide */
-        private static final Validator OMNI_NETWORK_TRAFFIC_AUTOHIDE_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Network traffic inactivity threshold (default is 10 kBs)
-         * @hide
-         */
-        public static final String OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD =
-                "network_traffic_autohide_threshold";
-
-        /** @hide */
-        private static final Validator OMNI_NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD_VALIDATOR =
-                ANY_INTEGER_VALIDATOR;
-
-        /**
-         * IMPORTANT: If you add a new public settings you also have to add it to
-         * PUBLIC_SETTINGS below. If the new setting is hidden you have to add
-         * it to PRIVATE_SETTINGS below. Also add a validator that can validate
-         * the setting value. See an example above.
-         */
->>>>>>> eb06a1a5beb... [1/2] [SQUASH] base: bring back status network traffic
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
