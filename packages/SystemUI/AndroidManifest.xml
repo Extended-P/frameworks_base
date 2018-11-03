@@ -227,6 +227,10 @@
     <!-- Weather on lockscreen -->
     <uses-permission android:name="org.pixelexperience.weather.client.READ_WEATHER" />
 
+    <!-- Reboot -->
+    <uses-permission android:name="android.permission.REBOOT" />
+    <uses-permission android:name="android.permission.RECOVERY" />
+
     <!-- Ambient Indication -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
