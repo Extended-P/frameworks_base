@@ -253,4 +253,11 @@ public class Utils {
         }
         return null;
     }
+
+    public static boolean isConnectionAvailable(Context context) {
+        ConnectivityManager connManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo network = (connManager != null) ? connManager.getActiveNetworkInfo() : null;
+        return network != null;
+    }
 }
