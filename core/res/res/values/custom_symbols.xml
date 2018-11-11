@@ -35,10 +35,6 @@
     <!-- Leds -->
     <java-symbol type="bool" name="config_intrusiveBatteryLed" />
 
-    <!-- Button backlight -->
-    <java-symbol type="integer" name="config_buttonBrightnessSettingDefault" />
-    <java-symbol type="bool" name="config_deviceHasVariableButtonBrightness" />
-
     <!-- Proximity check on screen on -->
     <java-symbol type="bool" name="config_proximityCheckOnWake" />
 
@@ -47,23 +43,6 @@
 
     <!-- Proximity check on screen on default -->
     <java-symbol type="bool" name="config_proximityCheckOnWakeEnabledByDefault" />
-
-    <!-- Device hardware keys -->
-    <java-symbol type="integer" name="config_deviceHardwareKeys" />
-    <java-symbol type="integer" name="config_deviceHardwareWakeKeys" />
-
-    <!-- Device keys user-customisable behavior -->
-    <java-symbol type="integer" name="config_longPressOnHomeBehaviorHwkeys" />
-    <java-symbol type="integer" name="config_doubleTapOnHomeBehaviorHwkeys" />
-    <java-symbol type="integer" name="config_longPressOnMenuBehaviorHwkeys" />
-    <java-symbol type="integer" name="config_longPressOnAppSwitchBehaviorHwkeys" />
-
-    <!-- Last app switch animations -->
-    <java-symbol type="anim" name="last_app_in" />
-    <java-symbol type="anim" name="last_app_out" />
-
-    <!-- Camera key type -->
-    <java-symbol type="bool" name="config_singleStageCameraKey" />
 
     <!-- Buttons - Enable navbar (used by Settings and device parts app) -->
     <java-symbol type="string" name="disable_navkeys_title" />

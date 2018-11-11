@@ -4102,7 +4102,7 @@ public final class Settings {
         public static final Validator LOCK_TO_APP_ENABLED_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
-         * I am the lolrus.
+         * I am the lolrus. wtf is a lolrus???
          * <p>
          * Nonzero values indicate that the user has a bukkit.
          * Backward-compatible with <code>PrefGetPreference(prefAllowEasterEggs)</code>.
@@ -4144,32 +4144,6 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
-         * The time in ms to keep the button backlight on after pressing a button.
-         * A value of 0 will keep the buttons on for as long as the screen is on.
-         * @hide
-         */
-        public static final String BUTTON_BACKLIGHT_TIMEOUT = "button_backlight_timeout";
-
-        /**
-         * Whether the button backlight is only lit when pressed (and not when screen is touched)
-         * The value is boolean (1 or 0).
-         */
-        public static final String BUTTON_BACKLIGHT_ONLY_WHEN_PRESSED =
-                "button_backlight_only_when_pressed";
-
-        /** @hide */
-        public static final Validator BUTTON_BACKLIGHT_ONLY_WHEN_PRESSED_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * The button brightness to be used while the screen is on or after a button press,
-         * depending on the value of {@link BUTTON_BACKLIGHT_TIMEOUT}.
-         * Valid value range is between 0 and {@link PowerManager#getMaximumButtonBrightness()}
-         * @hide
-         */
-        public static final String BUTTON_BRIGHTNESS = "button_brightness";
-
-        /**
          * Check the proximity sensor during wakeup
          * @hide
          */
@@ -4177,187 +4151,6 @@ public final class Settings {
 
         /** @hide */
         public static final Validator PROXIMITY_ON_WAKE_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Force show navigation bar setting.
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show";
-
-         /** @hide */
-        public static final Validator NAVIGATION_BAR_SHOW_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Action to perform when the home key is long-pressed.
-         * (Default can be configured via config_longPressOnHomeBehaviorHwkeys)
-         * 0 - Nothing
-         * 1 - Menu
-         * 2 - App-switch
-         * 3 - Search
-         * 4 - Voice search
-         * 5 - Launch Camera
-         * 6 - Action Sleep
-         * 7 - Last app
-         * 8 - Toggle split screen
-         */
-        public static final String KEY_HOME_LONG_PRESS_ACTION = "key_home_long_press_action";
-
-        /** @hide */
-        public static final Validator KEY_HOME_LONG_PRESS_ACTION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 8);
-
-        /**
-         * Action to perform when the home key is double-tapped.
-         * (Default can be configured via config_doubleTapOnHomeBehaviorHwkeys)
-         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
-         */
-        public static final String KEY_HOME_DOUBLE_TAP_ACTION = "key_home_double_tap_action";
-
-        /** @hide */
-        public static final Validator KEY_HOME_DOUBLE_TAP_ACTION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 8);
-
-        /**
-         * Action to perform when the menu key is pressed. (Default is 1)
-         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
-         */
-        public static final String KEY_MENU_ACTION = "key_menu_action";
-
-        /** @hide */
-        public static final Validator KEY_MENU_ACTION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 8);
-
-        /**
-         * Action to perform when the menu key is long-pressed.
-         * (Default is 0 on devices with a search key, 3 on devices without)
-         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
-         */
-        public static final String KEY_MENU_LONG_PRESS_ACTION = "key_menu_long_press_action";
-
-        /** @hide */
-        public static final Validator KEY_MENU_LONG_PRESS_ACTION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 8);
-
-        /**
-         * Action to perform when the assistant (search) key is pressed. (Default is 3)
-         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
-         */
-        public static final String KEY_ASSIST_ACTION = "key_assist_action";
-
-        /** @hide */
-        public static final Validator KEY_ASSIST_ACTION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 8);
-
-        /**
-         * Action to perform when the assistant (search) key is long-pressed. (Default is 4)
-         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
-         */
-        public static final String KEY_ASSIST_LONG_PRESS_ACTION = "key_assist_long_press_action";
-
-        /** @hide */
-        public static final Validator KEY_ASSIST_LONG_PRESS_ACTION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 8);
-
-        /**
-         * Action to perform when the app switch key is pressed. (Default is 2)
-         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
-         */
-        public static final String KEY_APP_SWITCH_ACTION = "key_app_switch_action";
-
-        /** @hide */
-        public static final Validator KEY_APP_SWITCH_ACTION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 8);
-
-        /**
-         * Action to perform when the app switch key is long-pressed. (Default is 0)
-         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
-         */
-        public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION = "key_app_switch_long_press_action";
-
-        /** @hide */
-        public static final Validator KEY_APP_SWITCH_LONG_PRESS_ACTION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 8);
-
-        /**
-         * Whether to wake the screen with the home key, the value is boolean.
-         * 0 = 0ff, 1 = on
-         */
-        public static final String HOME_WAKE_SCREEN = "home_wake_screen";
-
-        /** @hide */
-        public static final Validator HOME_WAKE_SCREEN_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Whether to wake the screen with the back key, the value is boolean.
-         * 0 = 0ff, 1 = on
-         */
-        public static final String BACK_WAKE_SCREEN = "back_wake_screen";
-
-        /** @hide */
-        public static final Validator BACK_WAKE_SCREEN_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Whether to wake the screen with the menu key, the value is boolean.
-         * 0 = 0ff, 1 = on
-         */
-        public static final String MENU_WAKE_SCREEN = "menu_wake_screen";
-
-        /** @hide */
-        public static final Validator MENU_WAKE_SCREENN_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Whether to wake the screen with the assist key, the value is boolean.
-         * 0 = 0ff, 1 = on
-         */
-        public static final String ASSIST_WAKE_SCREEN = "assist_wake_screen";
-
-        /** @hide */
-        public static final Validator ASSIST_WAKE_SCREEN_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Whether to wake the screen with the app switch key, the value is boolean.
-         * 0 = 0ff, 1 = on
-         */
-        public static final String APP_SWITCH_WAKE_SCREEN = "app_switch_wake_screen";
-
-        /** @hide */
-        public static final Validator APP_SWITCH_WAKE_SCREEN_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Whether to wake the screen with the camera key half-press.
-         * 0 = 0ff, 1 = on
-         */
-        public static final String CAMERA_WAKE_SCREEN = "camera_wake_screen";
-
-        /** @hide */
-        public static final Validator CAMERA_WAKE_SCREEN_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Whether or not to send device back to sleep if Camera button is released ("Peek")
-         * 0 = 0ff, 1 = on
-         */
-        public static final String CAMERA_SLEEP_ON_RELEASE = "camera_sleep_on_release";
-
-        /** @hide */
-        public static final Validator CAMERA_SLEEP_ON_RELEASE_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * Whether to launch secure camera app when key is longpressed
-         * 0 = 0ff, 1 = on
-         */
-        public static final String CAMERA_LAUNCH = "camera_launch";
-
-        /** @hide */
-        public static final Validator CAMERA_LAUNCH_VALIDATOR =
                 BOOLEAN_VALIDATOR;
 
         /**
@@ -4628,27 +4421,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(SHOW_BATTERY_PERCENT);
             PRIVATE_SETTINGS.add(DISPLAY_COLOR_MODE);
             PRIVATE_SETTINGS.add(BATTERY_LIGHT_ENABLED);
-            PRIVATE_SETTINGS.add(BUTTON_BACKLIGHT_TIMEOUT);
-            PRIVATE_SETTINGS.add(BUTTON_BACKLIGHT_ONLY_WHEN_PRESSED);
-            PRIVATE_SETTINGS.add(BUTTON_BRIGHTNESS);
             PRIVATE_SETTINGS.add(PROXIMITY_ON_WAKE);
-            PRIVATE_SETTINGS.add(NAVIGATION_BAR_SHOW);
-            PRIVATE_SETTINGS.add(KEY_HOME_LONG_PRESS_ACTION);
-            PRIVATE_SETTINGS.add(KEY_HOME_DOUBLE_TAP_ACTION);
-            PRIVATE_SETTINGS.add(KEY_MENU_ACTION);
-            PRIVATE_SETTINGS.add(KEY_MENU_LONG_PRESS_ACTION);
-            PRIVATE_SETTINGS.add(KEY_ASSIST_ACTION);
-            PRIVATE_SETTINGS.add(KEY_ASSIST_LONG_PRESS_ACTION);
-            PRIVATE_SETTINGS.add(KEY_APP_SWITCH_ACTION);
-            PRIVATE_SETTINGS.add(KEY_APP_SWITCH_LONG_PRESS_ACTION);
-            PRIVATE_SETTINGS.add(HOME_WAKE_SCREEN);
-            PRIVATE_SETTINGS.add(BACK_WAKE_SCREEN);
-            PRIVATE_SETTINGS.add(MENU_WAKE_SCREEN);
-            PRIVATE_SETTINGS.add(ASSIST_WAKE_SCREEN);
-            PRIVATE_SETTINGS.add(APP_SWITCH_WAKE_SCREEN);
-            PRIVATE_SETTINGS.add(CAMERA_WAKE_SCREEN);
-            PRIVATE_SETTINGS.add(CAMERA_SLEEP_ON_RELEASE);
-            PRIVATE_SETTINGS.add(CAMERA_LAUNCH);
             PRIVATE_SETTINGS.add(WEATHER_LOCKSCREEN_UNIT);
             PRIVATE_SETTINGS.add(CUSTOM_BUTTON_EXTRA_KEY_MAPPING);
             PRIVATE_SETTINGS.add(CUSTOM_DEVICE_PROXI_CHECK_ENABLED);
@@ -4657,6 +4430,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(AMBIENT_RECOGNITION);
             PRIVATE_SETTINGS.add(AMBIENT_RECOGNITION_KEYGUARD);
             PRIVATE_SETTINGS.add(AMBIENT_RECOGNITION_NOTIFICATION);
+
         }
 
         /**
@@ -4747,24 +4521,6 @@ public final class Settings {
             VALIDATORS.put(SHOW_BATTERY_PERCENT, SHOW_BATTERY_PERCENT_VALIDATOR);
             VALIDATORS.put(BATTERY_LIGHT_ENABLED, BATTERY_LIGHT_ENABLED_VALIDATOR);
             VALIDATORS.put(PROXIMITY_ON_WAKE, PROXIMITY_ON_WAKE_VALIDATOR);
-            VALIDATORS.put(BUTTON_BACKLIGHT_ONLY_WHEN_PRESSED, BUTTON_BACKLIGHT_ONLY_WHEN_PRESSED_VALIDATOR);
-            VALIDATORS.put(NAVIGATION_BAR_SHOW, NAVIGATION_BAR_SHOW_VALIDATOR);
-            VALIDATORS.put(KEY_HOME_LONG_PRESS_ACTION, KEY_HOME_LONG_PRESS_ACTION_VALIDATOR);
-            VALIDATORS.put(KEY_HOME_DOUBLE_TAP_ACTION, KEY_HOME_DOUBLE_TAP_ACTION_VALIDATOR);
-            VALIDATORS.put(KEY_MENU_ACTION, KEY_MENU_ACTION_VALIDATOR);
-            VALIDATORS.put(KEY_MENU_LONG_PRESS_ACTION, KEY_MENU_LONG_PRESS_ACTION_VALIDATOR);
-            VALIDATORS.put(KEY_ASSIST_ACTION, KEY_ASSIST_ACTION_VALIDATOR);
-            VALIDATORS.put(KEY_ASSIST_LONG_PRESS_ACTION, KEY_ASSIST_LONG_PRESS_ACTION_VALIDATOR);
-            VALIDATORS.put(KEY_APP_SWITCH_ACTION, KEY_APP_SWITCH_ACTION_VALIDATOR);
-            VALIDATORS.put(KEY_APP_SWITCH_LONG_PRESS_ACTION, KEY_APP_SWITCH_LONG_PRESS_ACTION_VALIDATOR);
-            VALIDATORS.put(HOME_WAKE_SCREEN, HOME_WAKE_SCREEN_VALIDATOR);
-            VALIDATORS.put(BACK_WAKE_SCREEN, BACK_WAKE_SCREEN_VALIDATOR);
-            VALIDATORS.put(MENU_WAKE_SCREEN, MENU_WAKE_SCREENN_VALIDATOR);
-            VALIDATORS.put(ASSIST_WAKE_SCREEN, ASSIST_WAKE_SCREEN_VALIDATOR);
-            VALIDATORS.put(APP_SWITCH_WAKE_SCREEN, APP_SWITCH_WAKE_SCREEN_VALIDATOR);
-            VALIDATORS.put(CAMERA_WAKE_SCREEN, CAMERA_WAKE_SCREEN_VALIDATOR);
-            VALIDATORS.put(CAMERA_SLEEP_ON_RELEASE, CAMERA_SLEEP_ON_RELEASE_VALIDATOR);
-            VALIDATORS.put(CAMERA_LAUNCH, CAMERA_LAUNCH_VALIDATOR);
             VALIDATORS.put(CUSTOM_BUTTON_EXTRA_KEY_MAPPING, CUSTOM_BUTTON_EXTRA_KEY_MAPPING_VALIDATOR);
             VALIDATORS.put(CUSTOM_DEVICE_PROXI_CHECK_ENABLED, CUSTOM_DEVICE_PROXI_CHECK_ENABLED_VALIDATOR);
             VALIDATORS.put(CUSTOM_DEVICE_GESTURE_FEEDBACK_ENABLED, CUSTOM_DEVICE_GESTURE_FEEDBACK_ENABLED_VALIDATOR);
