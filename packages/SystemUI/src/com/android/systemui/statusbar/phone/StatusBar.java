@@ -4137,6 +4137,10 @@ public class StatusBar extends SystemUI implements DemoMode,
                             useMemeTheme, mLockscreenUserManager.getCurrentUserId());
                     mOverlayManager.setEnabled("com.android.systemui.theme.meme",
                             useMemeTheme, mLockscreenUserManager.getCurrentUserId());
+                    mOverlayManager.setEnabled("com.google.android.gms.theme.meme",
+                            useMemeTheme, mLockscreenUserManager.getCurrentUserId());
+                    mOverlayManager.setEnabled("com.google.android.apps.wellbeing.theme.meme",
+                            useMemeTheme, mLockscreenUserManager.getCurrentUserId());
                 } catch (RemoteException e) {
                     Log.w(TAG, "Can't change theme", e);
                 }
