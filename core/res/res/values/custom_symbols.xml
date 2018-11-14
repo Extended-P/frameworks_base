@@ -104,4 +104,10 @@
     <!-- Smartnav anims -->
     <java-symbol type="anim" name="inv_app_in" />
     <java-symbol type="anim" name="inv_app_out" />
+
+    <!-- Minimum time in milliseconds between power button presses so it will be considered
+         as a camera launch. To avoid false triggers.
+    -->
+    <java-symbol type="integer" name="config_cameraPowerDoubleTapMinTime" />
+
 </resources>
