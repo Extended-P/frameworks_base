@@ -4275,6 +4275,7 @@ public final class Settings {
          * 1 - force light
          * 2 - force dark
          * 3 - force black
+         * 4 - force meme
          * @hide
          */
         public static final String SYSTEM_THEME_STYLE = "system_theme_style";
