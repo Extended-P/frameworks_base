@@ -117,11 +117,6 @@ public abstract class AbsListView extends AdapterView<ListAdapter> implements Te
     private final boolean PREOBTAIN_ENABLE = true;
 
     /**
-     * Property to enable/disable pre-obtain view
-     */
-    private final boolean PREOBTAIN_ENABLE = true;
-
-    /**
      * Disables the transcript mode.
      *
      * @see #setTranscriptMode(int)

@@ -52,9 +52,6 @@
     <java-symbol type="string" name="config_alternativeDeviceKeyHandlerLib" />
     <java-symbol type="string" name="config_alternativeDeviceKeyHandlerClass" />
 
-    <!-- Whether device supports gestures on fingerprint sensor -->
-    <java-symbol type="bool" name="config_supportsGesturesOnFingerprintSensor" />
-
     <!-- Weather icons -->
     <java-symbol type="drawable" name="weather_clear_night" />
     <java-symbol type="drawable" name="weather_cloudy" />

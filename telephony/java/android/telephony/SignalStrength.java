@@ -22,6 +22,7 @@ import android.os.Parcelable;
 import android.telephony.CarrierConfigManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.content.res.Resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;

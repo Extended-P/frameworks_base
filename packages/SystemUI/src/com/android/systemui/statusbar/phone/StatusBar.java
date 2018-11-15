@@ -268,6 +268,8 @@ public class StatusBar extends SystemUI implements DemoMode,
     public static final boolean ENABLE_CHILD_NOTIFICATIONS
             = SystemProperties.getBoolean("debug.child_notifs", true);
 
+    private int mCurrentUserId;
+
     protected static final int MSG_HIDE_RECENT_APPS = 1020;
     protected static final int MSG_PRELOAD_RECENT_APPS = 1022;
     protected static final int MSG_CANCEL_PRELOAD_RECENT_APPS = 1023;
@@ -4091,10 +4093,10 @@ public class StatusBar extends SystemUI implements DemoMode,
             // The system wallpaper defines if QS should be light or dark.
         WallpaperColors systemColors = mColorExtractor
                 .getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-         wallpaperWantsDarkTheme = systemColors != null
+        final boolean wallpaperWantsDarkTheme = systemColors != null
                 && (systemColors.getColorHints() & WallpaperColors.HINT_SUPPORTS_DARK_THEME) != 0;
         Configuration config = mContext.getResources().getConfiguration();
-        nightModeWantsDarkTheme = DARK_THEME_IN_NIGHT_MODE
+        final boolean nightModeWantsDarkTheme = DARK_THEME_IN_NIGHT_MODE
                 && (config.uiMode & Configuration.UI_MODE_NIGHT_MASK)
                     == Configuration.UI_MODE_NIGHT_YES;
         useBlackTheme = nightModeWantsDarkTheme;;
@@ -5417,7 +5419,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         return mVrMode;
     }
 
-    private ExtraSettingsObserver mExtrasSettingsObserver = new ExtraSettingsObserver(mHandler);
+    private ExtraSettingsObserver mExtraSettingsObserver = new ExtraSettingsObserver(mHandler);
 
     private class ExtraSettingsObserver extends ContentObserver {
         ExtraSettingsObserver(Handler handler) {
