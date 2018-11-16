@@ -29,6 +29,7 @@ import android.content.res.Resources;
 import android.metrics.LogMaker;
 import android.os.Handler;
 import android.os.Message;
+import android.os.UserHandle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
@@ -133,12 +134,13 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
                                 Settings.System.SCREEN_AUTO_BRIGHTNESS_ADJ, Math.max(-1.0f, brightness));
                     }
                 } else {
-                    int currentValue = Settings.System.getInt(resolver,
-                            Settings.System.SCREEN_BRIGHTNESS, 0);
-                    int brightness = currentValue - 10;
-                    if (currentValue != 0) {
-                        Settings.System.putInt(resolver,
-                                Settings.System.SCREEN_BRIGHTNESS, Math.max(0, brightness));
+                int currentValue = Settings.System.getIntForUser(resolver,
+                        Settings.System.SCREEN_BRIGHTNESS, 0, UserHandle.USER_CURRENT);
+                int brightness = currentValue - 10;
+                if (currentValue != 0) {
+                    int math = Math.max(0, brightness);
+                    Settings.System.putIntForUser(resolver,
+                            Settings.System.SCREEN_BRIGHTNESS, math, UserHandle.USER_CURRENT);
                     }
                 }
             }
@@ -166,12 +168,13 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
                                 Settings.System.SCREEN_AUTO_BRIGHTNESS_ADJ, Math.min(1.0f, brightness));
                     }
                 } else {
-                    int currentValue = Settings.System.getInt(resolver,
-                            Settings.System.SCREEN_BRIGHTNESS, 0);
-                    int brightness = currentValue + 10;
-                    if (currentValue != 255) {
-                        Settings.System.putInt(resolver,
-                                Settings.System.SCREEN_BRIGHTNESS, Math.min(255, brightness));
+                int currentValue = Settings.System.getIntForUser(resolver,
+                        Settings.System.SCREEN_BRIGHTNESS, 0, UserHandle.USER_CURRENT);
+                int brightness = currentValue + 10;
+                if (currentValue != 255) {
+                    int math = Math.min(255, brightness);
+                    Settings.System.putIntForUser(resolver,
+                            Settings.System.SCREEN_BRIGHTNESS, math, UserHandle.USER_CURRENT);
                     }
                 }
             }
