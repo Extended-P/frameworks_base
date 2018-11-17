@@ -4081,14 +4081,16 @@ public class StatusBar extends SystemUI implements DemoMode,
     /**
      * Switches theme from light to dark and vice-versa.
      */
+
+       final boolean useDarkTheme = false;
+       final boolean useBlackTheme = false;
+       final boolean useMemeTheme = false;
+
     protected void updateTheme() {
         final boolean inflated = mStackScroller != null && mStatusBarWindowManager != null;
 
         int userThemeSetting = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.SYSTEM_THEME_STYLE, 4, mLockscreenUserManager.getCurrentUserId());
-        boolean useDarkTheme = false;
-        boolean useBlackTheme = false;
-        boolean useMemeTheme = false;
         if (userThemeSetting == 0) {
             // The system wallpaper defines if QS should be light or dark.
         WallpaperColors systemColors = mColorExtractor
@@ -4101,9 +4103,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                     == Configuration.UI_MODE_NIGHT_YES;
         useBlackTheme = nightModeWantsDarkTheme;;
         } else {
-            useDarkTheme = userThemeSetting == 2;
-            useBlackTheme = userThemeSetting == 3;
-            useMemeTheme = userThemeSetting == 4;
+             useDarkTheme = userThemeSetting == 2;
+             useBlackTheme = userThemeSetting == 3;
+             useMemeTheme = userThemeSetting == 4;
         }
         if (isUsingDarkTheme() != useDarkTheme) {
             mUiOffloadThread.submit(() -> {

@@ -353,9 +353,7 @@ public class AppOpsManager {
     /** @hide */
     public static final int OP_BLUETOOTH_SCAN = 77;
     /** @hide */
-    public static final int OP_BOOT_COMPLETED = 78;
-    /** @hide */
-    public static final int _NUM_OP = 79;
+    public static final int _NUM_OP = 78;
 
     /** Access to coarse location information. */
     public static final String OPSTR_COARSE_LOCATION = "android:coarse_location";
@@ -469,9 +467,6 @@ public class AppOpsManager {
     /** Answer incoming phone calls */
     public static final String OPSTR_ANSWER_PHONE_CALLS
             = "android:answer_phone_calls";
-    /** Required for start at boot **/
-    private static final String OPSTR_BOOT_COMPLETED =
-            "android:boot_completed";
     /**
      * Accept call handover
      * @hide
@@ -663,8 +658,8 @@ public class AppOpsManager {
      */
     private static int[] sOpToSwitch = new int[] {
             OP_COARSE_LOCATION,                 // COARSE_LOCATION
-            OP_FINE_LOCATION,                   // FINE_LOCATION
-            OP_GPS,                             // GPS
+            OP_COARSE_LOCATION,                 // FINE_LOCATION
+            OP_COARSE_LOCATION,                 // GPS
             OP_VIBRATE,                         // VIBRATE
             OP_READ_CONTACTS,                   // READ_CONTACTS
             OP_WRITE_CONTACTS,                  // WRITE_CONTACTS
@@ -703,8 +698,8 @@ public class AppOpsManager {
             OP_AUDIO_NOTIFICATION_VOLUME,       // AUDIO_NOTIFICATION_VOLUME
             OP_AUDIO_BLUETOOTH_VOLUME,          // AUDIO_BLUETOOTH_VOLUME
             OP_WAKE_LOCK,                       // WAKE_LOCK
-            OP_FINE_LOCATION,                   // MONITOR_LOCATION
-            OP_FINE_LOCATION,                   // MONITOR_HIGH_POWER_LOCATION
+            OP_COARSE_LOCATION,                 // MONITOR_LOCATION
+            OP_COARSE_LOCATION,                 // MONITOR_HIGH_POWER_LOCATION
             OP_GET_USAGE_STATS,                 // GET_USAGE_STATS
             OP_MUTE_MICROPHONE,                 // MUTE_MICROPHONE
             OP_TOAST_WINDOW,                    // TOAST_WINDOW
@@ -739,8 +734,7 @@ public class AppOpsManager {
             OP_ACCEPT_HANDOVER,                 // ACCEPT_HANDOVER
             OP_MANAGE_IPSEC_TUNNELS,            // MANAGE_IPSEC_HANDOVERS
             OP_START_FOREGROUND,                // START_FOREGROUND
-            OP_BLUETOOTH_SCAN,                  // BLUETOOTH_SCAN
-            OP_BOOT_COMPLETED,                  // AppOp Boot Completed
+            OP_COARSE_LOCATION,                 // BLUETOOTH_SCAN
     };
 
     /**
@@ -825,7 +819,6 @@ public class AppOpsManager {
             OPSTR_MANAGE_IPSEC_TUNNELS,
             OPSTR_START_FOREGROUND,
             OPSTR_BLUETOOTH_SCAN,
-            OPSTR_BOOT_COMPLETED,
     };
 
     /**
@@ -911,7 +904,6 @@ public class AppOpsManager {
             "MANAGE_IPSEC_TUNNELS",
             "START_FOREGROUND",
             "BLUETOOTH_SCAN",
-            "BOOT_COMPLETED",
     };
 
     /**
@@ -996,8 +988,7 @@ public class AppOpsManager {
             Manifest.permission.ACCEPT_HANDOVER,
             null, // no permission for OP_MANAGE_IPSEC_TUNNELS
             Manifest.permission.FOREGROUND_SERVICE,
-            null, // no permission for OP_BLUETOOTH_SCAN,
-            Manifest.permission.RECEIVE_BOOT_COMPLETED
+            null, // no permission for OP_BLUETOOTH_SCAN
     };
 
     /**
@@ -1084,7 +1075,6 @@ public class AppOpsManager {
             null, // MANAGE_IPSEC_TUNNELS
             null, // START_FOREGROUND
             null, // maybe should be UserManager.DISALLOW_SHARE_LOCATION, //BLUETOOTH_SCAN
-            null, //BOOT_COMPLETED
     };
 
     /**
@@ -1170,7 +1160,6 @@ public class AppOpsManager {
             false, // MANAGE_IPSEC_HANDOVERS
             false, // START_FOREGROUND
             true, // BLUETOOTH_SCAN
-            false, // BOOT_COMPLETED
     };
 
     /**
@@ -1255,7 +1244,6 @@ public class AppOpsManager {
             AppOpsManager.MODE_ERRORED,  // MANAGE_IPSEC_TUNNELS
             AppOpsManager.MODE_ALLOWED,  // OP_START_FOREGROUND
             AppOpsManager.MODE_ALLOWED,  // OP_BLUETOOTH_SCAN
-            AppOpsManager.MODE_ALLOWED, // OP_BOOT_COMPLETED
     };
 
     /**
@@ -1344,7 +1332,6 @@ public class AppOpsManager {
             false, // MANAGE_IPSEC_TUNNELS
             false, // START_FOREGROUND
             false, // BLUETOOTH_SCAN
-            false, // OP_BOOT_COMPLETED
     };
 
     /**
@@ -1356,8 +1343,6 @@ public class AppOpsManager {
      * Mapping from a permission to the corresponding app op.
      */
     private static HashMap<String, Integer> sPermToOp = new HashMap<>();
-
-    private static HashMap<String, Integer> sNameToOp = new HashMap<String, Integer>();
 
     static {
         if (sOpToSwitch.length != _NUM_OP) {
@@ -1402,9 +1387,6 @@ public class AppOpsManager {
                 sPermToOp.put(sOpPerms[op], op);
             }
         }
-        for (int i=0; i<_NUM_OP; i++) {
-            sNameToOp.put(sOpNames[i], i);
-        }
     }
 
     /**
@@ -1434,15 +1416,6 @@ public class AppOpsManager {
             }
         }
         throw new IllegalArgumentException("Unknown operation string: " + op);
-    }
-
-    /**
-     * Map a non-localized name for the operation back to the Op number
-     * @hide
-     */
-    public static int nameToOp(String name) {
-        Integer val = sNameToOp.get(name);
-        return val != null ? val : OP_NONE;
     }
 
     /**
@@ -1584,11 +1557,9 @@ public class AppOpsManager {
         private final int mProxyUid;
         private final boolean mRunning;
         private final String mProxyPackageName;
-        private final int mAllowedCount;
-        private final int mIgnoredCount;
 
         public OpEntry(int op, int mode, long time, long rejectTime, int duration,
-                int proxyUid, String proxyPackage, int allowedCount, int ignoredCount) {
+                int proxyUid, String proxyPackage) {
             mOp = op;
             mMode = mode;
             mTimes = new long[_NUM_UID_STATE];
@@ -1599,13 +1570,10 @@ public class AppOpsManager {
             mRunning = duration == -1;
             mProxyUid = proxyUid;
             mProxyPackageName = proxyPackage;
-            mAllowedCount = allowedCount;
-            mIgnoredCount = ignoredCount;
         }
 
         public OpEntry(int op, int mode, long[] times, long[] rejectTimes, int duration,
-                boolean running, int proxyUid, String proxyPackage, int allowedCount,
-                int ignoredCount) {
+                boolean running, int proxyUid, String proxyPackage) {
             mOp = op;
             mMode = mode;
             mTimes = new long[_NUM_UID_STATE];
@@ -1616,14 +1584,11 @@ public class AppOpsManager {
             mRunning = running;
             mProxyUid = proxyUid;
             mProxyPackageName = proxyPackage;
-            mAllowedCount = allowedCount;
-            mIgnoredCount = ignoredCount;
         }
 
         public OpEntry(int op, int mode, long[] times, long[] rejectTimes, int duration,
-                int proxyUid, String proxyPackage, int allowedCount, int ignoredCount) {
-            this(op, mode, times, rejectTimes, duration, duration == -1, proxyUid,
-                 proxyPackage, allowedCount, ignoredCount);
+                int proxyUid, String proxyPackage) {
+            this(op, mode, times, rejectTimes, duration, duration == -1, proxyUid, proxyPackage);
         }
 
         public int getOp() {
@@ -1690,14 +1655,6 @@ public class AppOpsManager {
             return mProxyPackageName;
         }
 
-        public int getAllowedCount() {
-            return mAllowedCount;
-        }
-
-        public int getIgnoredCount() {
-            return mIgnoredCount;
-        }
-
         @Override
         public int describeContents() {
             return 0;
@@ -1713,8 +1670,6 @@ public class AppOpsManager {
             dest.writeBoolean(mRunning);
             dest.writeInt(mProxyUid);
             dest.writeString(mProxyPackageName);
-            dest.writeInt(mAllowedCount);
-            dest.writeInt(mIgnoredCount);
         }
 
         OpEntry(Parcel source) {
@@ -1726,8 +1681,6 @@ public class AppOpsManager {
             mRunning = source.readBoolean();
             mProxyUid = source.readInt();
             mProxyPackageName = source.readString();
-            mAllowedCount = source.readInt();
-            mIgnoredCount = source.readInt();
         }
 
         public static final Creator<OpEntry> CREATOR = new Creator<OpEntry>() {
@@ -2635,13 +2588,5 @@ public class AppOpsManager {
             }
         }
         return time;
-    }
-
-    /** @hide */
-    public void resetCounters() {
-        try {
-            mService.resetCounters();
-        } catch (RemoteException e) {
-        }
     }
 }

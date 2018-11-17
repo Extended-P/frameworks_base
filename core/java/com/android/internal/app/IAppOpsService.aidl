@@ -56,7 +56,4 @@ interface IAppOpsService {
     boolean isOperationActive(int code, int uid, String packageName);
 
     void startWatchingModeWithFlags(int op, String packageName, int flags, IAppOpsCallback callback);
-
-    // AppOps accounting
-    void resetCounters();
 }

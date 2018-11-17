@@ -408,8 +408,6 @@ public class AppOpsService extends IAppOpsService.Stub {
         long rejectTime[] = new long[_NUM_UID_STATE];
         int startNesting;
         long startRealtime;
-        public int allowedCount;
-        public int ignoredCount;
 
         Op(UidState _uidState, String _packageName, int _op) {
             uidState = _uidState;
@@ -621,17 +619,10 @@ public class AppOpsService extends IAppOpsService.Stub {
                     } catch (RemoteException ignored) {
                     }
                     if (curUid != ops.uidState.uid) {
-                        // Do not prune apps that are not currently present in the device
-                        // (like SDcard ones). While booting, SDcards are not available but
-                        // must not be purged from AppOps, because they are still present
-                        // in the Android app database.
-                        String pkgName = mContext.getPackageManager().getNameForUid(ops.uidState.uid);
-                        if (curUid != -1 || pkgName == null || !pkgName.equals(ops.packageName)) {
-                            Slog.i(TAG, "Pruning old package " + ops.packageName
-                                    + "/" + ops.uidState + ": new uid=" + curUid);
-                            it.remove();
-                            changed = true;
-                        }
+                        Slog.i(TAG, "Pruning old package " + ops.packageName
+                                + "/" + ops.uidState + ": new uid=" + curUid);
+                        it.remove();
+                        changed = true;
                     }
                 }
 
@@ -827,7 +818,7 @@ public class AppOpsService extends IAppOpsService.Stub {
                         : curOp.duration;
                 resOps.add(new AppOpsManager.OpEntry(curOp.op, curOp.mode, curOp.time,
                         curOp.rejectTime, (int) duration, running, curOp.proxyUid,
-                        curOp.proxyPackageName, curOp.allowedCount, curOp.ignoredCount));
+                        curOp.proxyPackageName));
             }
         } else {
             for (int j=0; j<ops.length; j++) {
@@ -842,7 +833,7 @@ public class AppOpsService extends IAppOpsService.Stub {
                             : curOp.duration;
                     resOps.add(new AppOpsManager.OpEntry(curOp.op, curOp.mode, curOp.time,
                             curOp.rejectTime, (int) duration, running, curOp.proxyUid,
-                            curOp.proxyPackageName, curOp.allowedCount, curOp.ignoredCount));
+                            curOp.proxyPackageName));
                 }
             }
         }
@@ -855,7 +846,7 @@ public class AppOpsService extends IAppOpsService.Stub {
             resOps = new ArrayList<>();
             for (int j=0; j<uidOps.size(); j++) {
                 resOps.add(new AppOpsManager.OpEntry(uidOps.keyAt(j), uidOps.valueAt(j),
-                        0, 0, 0, -1, null, 0, 0));
+                        0, 0, 0, -1, null));
             }
         } else {
             for (int j=0; j<ops.length; j++) {
@@ -865,7 +856,7 @@ public class AppOpsService extends IAppOpsService.Stub {
                         resOps = new ArrayList<>();
                     }
                     resOps.add(new AppOpsManager.OpEntry(uidOps.keyAt(index), uidOps.valueAt(index),
-                            0, 0, 0, -1, null, 0, 0));
+                            0, 0, 0, -1, null));
                 }
             }
         }
@@ -1583,7 +1574,6 @@ public class AppOpsService extends IAppOpsService.Stub {
             }
             final Op op = getOpLocked(ops, code, true);
             if (isOpRestrictedLocked(uid, code, packageName)) {
-                op.ignoredCount++;
                 return AppOpsManager.MODE_IGNORED;
             }
             final UidState uidState = ops.uidState;
@@ -1613,7 +1603,6 @@ public class AppOpsService extends IAppOpsService.Stub {
                             + switchCode + " (" + code + ") uid " + uid + " package "
                             + packageName);
                     op.rejectTime[uidState.state] = System.currentTimeMillis();
-                    op.ignoredCount++;
                     return mode;
                 }
             }
@@ -1698,7 +1687,6 @@ public class AppOpsService extends IAppOpsService.Stub {
             }
             final Op op = getOpLocked(ops, code, true);
             if (isOpRestrictedLocked(uid, code, resolvedPackageName)) {
-                op.ignoredCount++;
                 return AppOpsManager.MODE_IGNORED;
             }
             final int switchCode = AppOpsManager.opToSwitch(code);
@@ -1724,7 +1712,6 @@ public class AppOpsService extends IAppOpsService.Stub {
                             + switchCode + " (" + code + ") uid " + uid + " package "
                             + resolvedPackageName);
                     op.rejectTime[uidState.state] = System.currentTimeMillis();
-                    op.ignoredCount++;
                     return mode;
                 }
             }
@@ -2296,20 +2283,8 @@ public class AppOpsService extends IAppOpsService.Stub {
                     uidState.pkgOps = new ArrayMap<>();
                 }
 
-                int code = Integer
-                        .parseInt(parser.getAttributeValue(null, "n"));
-                // use op name string if it exists
-                String codeNameStr = parser.getAttributeValue(null, "ns");
-                if (codeNameStr != null) {
-                    // returns OP_NONE if it could not be mapped
-                    code = AppOpsManager.nameToOp(codeNameStr);
-                }
-                // skip op codes that are out of bounds
-                if (code == AppOpsManager.OP_NONE
-                        || code >= AppOpsManager._NUM_OP) {
-                    continue;
-                }
-                Op op = new Op(uidState, pkgName, code);
+                Op op = new Op(uidState, pkgName,
+                        Integer.parseInt(parser.getAttributeValue(null, "n")));
 
                 for (int i = parser.getAttributeCount()-1; i >= 0; i--) {
                     final String name = parser.getAttributeName(i);
@@ -2326,12 +2301,6 @@ public class AppOpsService extends IAppOpsService.Stub {
                             break;
                         case "pp":
                             op.proxyPackageName = value;
-                            break;
-                        case "ac":
-                            op.allowedCount = Integer.parseInt(value);
-                            break;
-                        case "ic":
-                            op.ignoredCount = Integer.parseInt(value);
                             break;
                         case "tp":
                             op.time[AppOpsManager.UID_STATE_PERSISTENT] = Long.parseLong(value);
@@ -2476,7 +2445,6 @@ public class AppOpsService extends IAppOpsService.Stub {
                             AppOpsManager.OpEntry op = ops.get(j);
                             out.startTag(null, "op");
                             out.attribute(null, "n", Integer.toString(op.getOp()));
-                            out.attribute(null, "ns", AppOpsManager.opToName(op.getOp()));
                             if (op.getMode() != AppOpsManager.opToDefaultMode(op.getOp())) {
                                 out.attribute(null, "m", Integer.toString(op.getMode()));
                             }
@@ -2503,14 +2471,6 @@ public class AppOpsService extends IAppOpsService.Stub {
                             String proxyPackageName = op.getProxyPackageName();
                             if (proxyPackageName != null) {
                                 out.attribute(null, "pp", proxyPackageName);
-                            }
-                            int allowed = op.getAllowedCount();
-                            if (allowed != 0) {
-                                out.attribute(null, "ac", Integer.toString(allowed));
-                            }
-                            int ignored = op.getIgnoredCount();
-                            if (ignored != 0) {
-                                out.attribute(null, "ic", Integer.toString(ignored));
                             }
                             out.endTag(null, "op");
                         }
@@ -3814,28 +3774,6 @@ public class AppOpsService extends IAppOpsService.Stub {
             synchronized (AppOpsService.this) {
                 mProfileOwners = owners;
             }
-        }
-    }
-
-    @Override
-    public void resetCounters() {
-        mContext.enforcePermission(android.Manifest.permission.UPDATE_APP_OPS_STATS,
-                Binder.getCallingPid(), Binder.getCallingUid(), null);
-        synchronized (this) {
-            for (int i=0; i<mUidStates.size(); i++) {
-                final UidState uidState = mUidStates.valueAt(i);
-                for (Map.Entry<String, Ops> ent : uidState.pkgOps.entrySet()) {
-                    String packageName = ent.getKey();
-                    Ops pkgOps = ent.getValue();
-                    for (int j=0; j<pkgOps.size(); j++) {
-                        Op curOp = pkgOps.valueAt(j);
-                        curOp.allowedCount = 0;
-                        curOp.ignoredCount = 0;
-                    }
-                }
-            }
-            // ensure the counter reset persists
-            scheduleWriteLocked();
         }
     }
 }
