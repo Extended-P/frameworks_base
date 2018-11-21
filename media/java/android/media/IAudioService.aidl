@@ -25,7 +25,6 @@ import android.media.AudioRoutesInfo;
 import android.media.IAudioFocusDispatcher;
 import android.media.IAudioRoutesObserver;
 import android.media.IAudioServerStateDispatcher;
-import android.media.IPlaybackConfigDispatcher;
 import android.media.IRecordingConfigDispatcher;
 import android.media.IRingtonePlayer;
 import android.media.IVolumeController;
@@ -221,6 +220,17 @@ interface IAudioService {
     oneway void unregisterAudioServerStateDispatcher(IAudioServerStateDispatcher asd);
 
     boolean isAudioServerRunning();
+
+    /**
+     * Internal SmartNav api to protect Pulse
+     * @hide
+     */
+    void setVisualizerLocked(boolean doLock);
+
+    /**
+     * @hide
+     */
+    boolean isVisualizerLocked(String callingPackage);
 
     // WARNING: read warning at top of file, new methods that need to be used by native
     // code via IAudioManager.h need to be added to the top section.

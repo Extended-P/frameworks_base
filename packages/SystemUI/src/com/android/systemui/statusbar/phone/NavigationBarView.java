@@ -32,6 +32,7 @@ import android.annotation.StyleRes;
 import android.app.StatusBarManager;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -55,6 +56,7 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityNodeInfo.AccessibilityAction;
+import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
@@ -65,6 +67,8 @@ import com.android.systemui.OverviewProxyService;
 import com.android.systemui.R;
 import com.android.systemui.RecentsComponent;
 import com.android.systemui.SysUiServiceProvider;
+import com.android.systemui.navigation.pulse.PulseController;
+import com.android.systemui.navigation.pulse.PulseController.PulseObserver;
 import com.android.systemui.navigation.Navigator;
 import com.android.systemui.plugins.PluginListener;
 import com.android.systemui.plugins.PluginManager;
@@ -90,7 +94,7 @@ import static com.android.systemui.shared.system.NavigationBarCompat.FLAG_SHOW_O
 import static com.android.systemui.shared.system.NavigationBarCompat.HIT_TARGET_OVERVIEW;
 import static com.android.systemui.shared.system.NavigationBarCompat.HIT_TARGET_ROTATION;
 
-public class NavigationBarView extends FrameLayout implements Navigator {
+public class NavigationBarView extends FrameLayout implements Navigator, PulseObserver {
     final static boolean DEBUG = false;
     final static String TAG = "StatusBar/NavBarView";
 
@@ -163,6 +167,9 @@ public class NavigationBarView extends FrameLayout implements Navigator {
     private Divider mDivider;
     private RecentsOnboarding mRecentsOnboarding;
     private NotificationPanelView mPanelView;
+
+    private PulseController mPulseController;
+    private boolean mKeyguardShowing;
 
     private int mRotateBtnStyle = R.style.RotateButtonCCWStart90;
 
@@ -675,6 +682,10 @@ public class NavigationBarView extends FrameLayout implements Navigator {
             disableBack = disableRecent = false;
         }
 
+        if (mPulseController != null) {
+            mPulseController.setScreenPinningState(pinningActive);
+        }
+    
         ViewGroup navButtons = (ViewGroup) getCurrentView().findViewById(R.id.nav_buttons);
         if (navButtons != null) {
             LayoutTransition lt = navButtons.getLayoutTransition();
@@ -944,6 +955,9 @@ public class NavigationBarView extends FrameLayout implements Navigator {
     protected void onDraw(Canvas canvas) {
         mGestureHelper.onDraw(canvas);
         mDeadZone.onDraw(canvas);
+        if (mPulseController != null) {
+            mPulseController.onDraw(canvas);
+        }
         super.onDraw(canvas);
     }
 
@@ -1013,6 +1027,77 @@ public class NavigationBarView extends FrameLayout implements Navigator {
         return mVertical;
     }
 
+    public void setPulseController(PulseController pc) {
+        mPulseController = pc;
+        mPulseController.setPulseObserver(this);
+    }
+
+    public final void setKeyguardShowing(boolean showing) {
+        if (mKeyguardShowing != showing) {
+            mKeyguardShowing = showing;
+            if (mPulseController != null) {
+                mPulseController.setKeyguardShowing(showing);
+            }
+            //onKeyguardShowing(showing);
+        }
+    }
+
+    public void notifyPulseScreenOn(boolean screenOn) {
+        if (mPulseController != null) {
+            mPulseController.notifyScreenOn(screenOn);
+        }
+    }
+
+    public void sendIntentToPulse(Intent intent) {
+        if (mPulseController != null) {
+            mPulseController.onReceive(intent);
+        }
+    }
+
+    public final void dispose() {
+        if (mPulseController != null) {
+            mPulseController.doUnlinkVisualizer();
+        }
+    }
+
+    public final void notifyInflateFromUser() {
+        if (mPulseController != null) {
+            mPulseController.notifyScreenOn(true);
+        }
+    }
+
+    public void setLeftInLandscape(boolean leftInLandscape) {
+        if (mPulseController != null) {
+            mPulseController.setLeftInLandscape(leftInLandscape);
+        }
+    }
+
+    @Override
+    public boolean onStartPulse(Animation animatePulseIn) {
+        // TODO add buttons alpha animation
+        mPulseController.turnOnPulse();
+        return true;
+    }
+
+    @Override
+    public void onStopPulse(Animation animatePulseOut) {
+        // TODO add buttons alpha animation
+    }
+
+    public boolean isBarPulseFaded() {
+        if (mPulseController == null) {
+            return false;
+        } else {
+            return mPulseController.shouldDrawPulse();
+        }
+    }
+
+    public void setMediaPlaying(boolean playing) {
+        if (mPulseController != null) {
+            mPulseController.setMediaPlaying(playing);
+        }
+    }
+
     public void reorient() {
         updateCurrentView();
 
@@ -1058,6 +1143,9 @@ public class NavigationBarView extends FrameLayout implements Navigator {
         }
 
         postCheckForInvalidLayout("sizeChanged");
+        if (mPulseController != null) {
+            mPulseController.onSizeChanged(w, h, oldw, oldh);
+        }
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
