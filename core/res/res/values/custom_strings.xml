@@ -1,5 +1,4 @@
-
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Ambient play -->
     <string name="ambient_recognition_notification">Now Playing</string>
     <string name="ambient_recognition_information">%1$s by %2$s</string>
@@ -21,7 +20,7 @@
     <string name="permdesc_toggleNavigationEditor">Allows an application to control the navigation bar editor.</string>
 
     <!-- Vendor mismatched fingerprint warning [CHAR LIMIT=NONE] -->
-    <string name="system_error_vendorprint">Your vendor image does not match the system. Please flash the <xliff:g id="string">%s</xliff:g> vendor image for your device< string>
+    <string name="system_error_vendorprint">Your vendor image does not match the system. Please flash the <xliff:g id="string">%s</xliff:g> vendor image for your device</string>
 
     <!-- Power menu --> 
     <string name="reboot_to_recovery_title" translatable="false">Recovery</string>
