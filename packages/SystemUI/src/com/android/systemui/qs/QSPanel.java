@@ -136,7 +136,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
                 } else {
                 int currentValue = Settings.System.getIntForUser(resolver,
                         Settings.System.SCREEN_BRIGHTNESS, 0, UserHandle.USER_CURRENT);
-                int brightness = currentValue - 10;
+                int brightness = currentValue - 2;
                 if (currentValue != 0) {
                     int math = Math.max(0, brightness);
                     Settings.System.putIntForUser(resolver,
@@ -170,7 +170,7 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
                 } else {
                 int currentValue = Settings.System.getIntForUser(resolver,
                         Settings.System.SCREEN_BRIGHTNESS, 0, UserHandle.USER_CURRENT);
-                int brightness = currentValue + 10;
+                int brightness = currentValue + 2;
                 if (currentValue != 255) {
                     int math = Math.min(255, brightness);
                     Settings.System.putIntForUser(resolver,
