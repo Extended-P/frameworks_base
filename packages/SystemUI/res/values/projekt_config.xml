@@ -18,6 +18,7 @@
 
     <!-- Config to enable/disable qs tile tinting -->
     <bool name="config_enable_qs_tile_tinting">false</bool>
+    <bool name="config_enable_qs_bg_tinting">false</bool>
 
     <!-- QS Brightness control padding -->
     <dimen name="qs_brightness_footer_padding">12dp</dimen>

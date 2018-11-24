@@ -94,8 +94,9 @@ public class QSTileBaseView extends com.android.systemui.plugins.qs.QSTileView {
         setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         setBackground(mTileBackground);
 
-        boolean enableQsTileTinting = context.getResources().getBoolean(R.bool.config_enable_qs_tile_tinting);
-        if (!enableQsTileTinting) {
+        boolean enableQsbgTinting = context.getResources().getBoolean(R.bool.config_enable_qs_bg_tinting);
+
+        if (!enableQsbgTinting) {
             mColorActive = Utils.getColorAttr(context, android.R.attr.colorAccent);
             mColorDisabled = Utils.getDisabled(context,
                     Utils.getColorAttr(context, android.R.attr.textColorTertiary));
