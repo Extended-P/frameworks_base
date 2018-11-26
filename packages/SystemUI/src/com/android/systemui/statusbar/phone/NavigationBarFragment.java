@@ -360,9 +360,6 @@ Navigator.OnVerticalChangedListener, KeyguardMonitor.Callback, NotificationMedia
         IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_USER_SWITCHED);
-        filter.addAction(PowerManager.ACTION_POWER_SAVE_MODE_CHANGING);
-        filter.addAction(AudioManager.STREAM_MUTE_CHANGED_ACTION);
-        filter.addAction(AudioManager.VOLUME_CHANGED_ACTION);
         getContext().registerReceiverAsUser(mBroadcastReceiver, UserHandle.ALL, filter, null, null);
         notifyNavigationBarScreenOn();
         mOverviewProxyService.addCallback(mOverviewProxyListener);
@@ -783,19 +780,6 @@ Navigator.OnVerticalChangedListener, KeyguardMonitor.Callback, NotificationMedia
 
     private boolean hasDisable2RotateSuggestionFlag(int disable2Flags) {
         return (disable2Flags & StatusBarManager.DISABLE2_ROTATE_SUGGESTIONS) != 0;
-    }
-
-    public void setPulseColors(boolean colorizedMedia, int[] colors) {
-        if (mNavigationBarView != null) {
-            mNavigationBarView.setPulseColors(colorizedMedia, colors);
-        }
-    }
-
-    @Override
-    public void onMediaUpdated(boolean playing) {
-        if (mNavigationBarView != null) {
-            mNavigationBarView.setMediaPlaying(playing);
-        }
     }
 
     // ----- Internal stuffz -----
@@ -1231,19 +1215,16 @@ Navigator.OnVerticalChangedListener, KeyguardMonitor.Callback, NotificationMedia
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+            if (Intent.ACTION_SCREEN_OFF.equals(action)
+                    || Intent.ACTION_SCREEN_ON.equals(action)) {
                 notifyNavigationBarScreenOn();
-                notifyPulseScreenOn(false);
-            } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                notifyNavigationBarScreenOn();
-                notifyPulseScreenOn(true);
-            } else if (Intent.ACTION_USER_SWITCHED.equals(action)) {
+            }
+            if (Intent.ACTION_USER_SWITCHED.equals(action)) {
                 // The accessibility settings may be different for the new user
                 updateAccessibilityServicesState(mAccessibilityManager);
-            }
-            sendIntentToPulse(intent);
+            };
         }
-     };
+    };
 
     class TaskStackListenerImpl extends SysUiTaskStackChangeListener {
         // Invalidate any rotation suggestion on task change or activity orientation change
@@ -1409,14 +1390,6 @@ Navigator.OnVerticalChangedListener, KeyguardMonitor.Callback, NotificationMedia
         }
     }
 
-    private void notifyPulseScreenOn(boolean on) {
-        mNavigationBarView.notifyPulseScreenOn(on);
-    }
-
-    private void sendIntentToPulse(Intent intent) {
-        mNavigationBarView.sendIntentToPulse(intent);
-    }
-
     @Override
     public void onDetach() {
         mIsAttached = false;
@@ -1424,12 +1397,12 @@ Navigator.OnVerticalChangedListener, KeyguardMonitor.Callback, NotificationMedia
         super.onDetach();
     }
 
-  /*  @Override
+    @Override
     public void onMediaUpdated(boolean playing) {
         if (mNavigationBarView != null) {
             mNavigationBarView.setMediaPlaying(playing);
         }
-    } */
+    }
 
     public void setPanelExpanded(boolean expanded) {
         if (mNavigationBarView != null) {
@@ -1460,7 +1433,6 @@ Navigator.OnVerticalChangedListener, KeyguardMonitor.Callback, NotificationMedia
                     .setNavigationBar(mNavigationBarView.getLightTransitionsController());
             if (isUsingStockNav()) {
                 mNavigationBarView.getBaseView().setOnTouchListener(this::onNavigationTouch);
-                mNavigationBarView.setPulseController(mPulseController);
             } else {
                 ((NavigationBarFrame) vg).disableDeadZone();
                 mNavigationBarView.setMediaPlaying(mMediaManager.isPlaybackActive());

@@ -4276,6 +4276,7 @@ public final class Settings {
         /** @hide */
         private static final Validator AMBIENT_RECOGNITION_NOTIFICATION_VALIDATOR =
                 BOOLEAN_VALIDATOR;
+
         /**
          * Select various accents to go along with system themes
          *
